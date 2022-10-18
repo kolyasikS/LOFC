@@ -1,0 +1,93 @@
+﻿<Window x:Class="LOFC.PL.Forms.ClubsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LOFC.PL.Forms" xmlns:viewmodels="clr-namespace:PL.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ClubViewModel}"
+        mc:Ignorable="d"
+        Title="Clubs" Height="700" MaxHeight="700" MinHeight="500" Width="1200" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style TargetType="ListBox">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Background" Value="#FF332E2E"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Background" Value="#FF6A6168"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="WrappedColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding}" Padding="3 0 5 0"></TextBlock>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="clubsView">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <!--DataGrid-->
+        <DataGrid x:Name="ClubsTable" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="4" 
+                  Background="#FF939393" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding FilterClubList}" 
+                  CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False"
+                  Margin="10" FontSize="16">
+            <DataGrid.Columns >
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name"                      HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
+                <DataGridTextColumn Binding="{Binding Country}" Header="Country"                HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
+                <DataGridTextColumn Binding="{Binding DateFoundation}" Header="Date foundation" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
+                <DataGridTextColumn Binding="{Binding Cost}" Header="Cost"                      HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
+                <DataGridTextColumn Binding="{Binding PosUEFARatingClubs}" Header="UEFA rating" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
+                <DataGridTextColumn Binding="{Binding AmountTrophies}" Header="Amount trophies" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Schema}" Header="Schema"                  HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Group}" Header="Group"                    HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
+                <DataGridTextColumn Binding="{Binding League}" Header="League"                  HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Couch}" Header="Couch"                    HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--DataGrid-->
+
+        <StackPanel Margin="10 0 10 0"  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
+            <Label   Height="40" Content="Search club (Name)..." FontSize="18"/>
+            <TextBox Height="30" FontSize="16" Text="{Binding FilterName, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <StackPanel x:Name="stackPanelsComboBoxesSP" Margin="10 0 10 0"  Grid.Column="0" Grid.Row="2" Grid.RowSpan="2">
+            <StackPanel Height="80" Margin="0 0 0 10">
+                <Label   Height="40" Content="Search by Country..." FontSize="18"/>
+                <ComboBox x:Name="countryCB" Height="30" FontSize="16"  ItemsSource="{Binding ClubList}" DisplayMemberPath="Country" SelectionChanged="FilterClubsCB"/>
+            </StackPanel>
+            <StackPanel Height="80" Margin="0 0 0 10">
+                <Label   Height="40" Content="Search by Schema..." FontSize="18"/>
+                <ComboBox x:Name="schemaCB" Height="30" FontSize="16" ItemsSource="{Binding DistinctSchemas}" SelectionChanged="FilterClubsCB"/>
+            </StackPanel>
+            <StackPanel Height="80">
+                <Label   Height="40" Content="Search by League..." FontSize="18"/>
+                <ComboBox Height="30" FontSize="16" ItemsSource="{Binding ClubList}" DisplayMemberPath="League" SelectionChanged="FilterClubsCB"/>
+            </StackPanel>
+        </StackPanel>
+
+        <Button Grid.Column="0" Grid.Row="4" Content="Clear filter" Click="ClearFilter"/>
+        <Button Grid.Column="1" Grid.Row="4" Content="Create Club" Click="CreateClub"/>
+    </Grid>
+</Window>
