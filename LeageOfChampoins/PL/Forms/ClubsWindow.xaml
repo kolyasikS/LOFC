@@ -14,6 +14,13 @@
             <Setter Property="Background" Value="#FF332E2E"/>
         </Style>
         <Style TargetType="Button">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding}" FontSize="18"></TextBlock>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="Height" Value="50"/>
             <Setter Property="Width" Value="150"/>
@@ -52,7 +59,7 @@
         <DataGrid x:Name="ClubsTable" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="4" 
                   Background="#FF939393" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding FilterClubList}" 
                   CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False"
-                  Margin="10" FontSize="16">
+                  SelectionMode="Single" Margin="10" FontSize="16">
             <DataGrid.Columns >
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name"                      HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
                 <DataGridTextColumn Binding="{Binding Country}" Header="Country"                HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
@@ -87,7 +94,10 @@
             </StackPanel>
         </StackPanel>
 
-        <Button Grid.Column="0" Grid.Row="4" Content="Clear filter" Click="ClearFilter"/>
-        <Button Grid.Column="1" Grid.Row="4" Content="Create Club" Click="CreateClub"/>
+        <Button Grid.Column="0" Grid.Row="4" Content="Clear filter" Click="ClearFilterButtonClick"/>
+        <Button Grid.Column="1" Grid.Row="4" Content="Top 10 clubs by owners's capital" Height="60" Click="GetTopByCapitalOfOwner"/>
+        <Button Grid.Column="2" Grid.Row="4" Content="Create" Click="CreateClub" />
+        <Button Grid.Column="3" Grid.Row="4" Content="Delete" Click="DeleteClub" />
+        <Button Grid.Column="4" Grid.Row="4" Content="Edit" Click="EditClub" />
     </Grid>
 </Window>

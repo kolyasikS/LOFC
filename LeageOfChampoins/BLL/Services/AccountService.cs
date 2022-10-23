@@ -1,6 +1,4 @@
-﻿using BLL.Abstractions.Interfaces;
-using BLL.Entities;
-using DAL.Absractions.Interfaces;
+﻿using BLL.Entities;
 using DAL.Services;
 using System;
 using System.Collections.Generic;
@@ -8,25 +6,25 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-
+ 
 namespace BLL.Services
 {
-    public class ClubService: IClubService
+    public class AccountService
     {
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
-        public ClubService()
+        public AccountService()
         {
 
         }
 
-        public async Task<int> CreateClub(Club club)
+        public async Task<int> CreateAccount(Account account)
         {
 
             _unitOfWork.CreateTransaction();
 
             try
             {
-                await _unitOfWork.ClubRepository.Insert(club);
+                await _unitOfWork.AccountRepository.Insert(account);
 
                 await _unitOfWork.SaveAsync();
 
@@ -44,43 +42,16 @@ namespace BLL.Services
 
                 }
             }
-            return club.Id;
-
+            return account.Id;
         }
 
-        public async Task DeleteClub(Club club)
+            public async Task DeleteAccount(Account account)
         {
             _unitOfWork.CreateTransaction();
 
             try
             {
-                _unitOfWork.ClubRepository.Delete(club);
-
-                await _unitOfWork.SaveAsync();
-
-                _unitOfWork.Commit();
-
-            }
-            catch (Exception e)
-            {
-                try
-                {
-                    _unitOfWork.RollBack();
-                }
-                catch (Exception e1)
-                {
-
-                }
-            }
-        }
-
-        public async Task UpdateClub(Club club)
-        {
-            _unitOfWork.CreateTransaction();
-
-            try
-            {
-                _unitOfWork.ClubRepository.Update(club);
+                _unitOfWork.AccountRepository.Delete(account);
 
                 await _unitOfWork.SaveAsync();
 
@@ -100,14 +71,40 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<Club>> GetClubs()
+        public async Task UpdateAccount(Account account)
         {
-            IEnumerable<Club> clubs = null;
-
             _unitOfWork.CreateTransaction();
+
             try
             {
-                clubs = await _unitOfWork.ClubRepository.Get();
+                _unitOfWork.AccountRepository.Update(account);
+
+                await _unitOfWork.SaveAsync();
+
+                _unitOfWork.Commit();
+
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    _unitOfWork.RollBack();
+                }
+                catch (Exception e1)
+                {
+
+                }
+            }
+        }
+        public async Task<IEnumerable<Account>> GetAccount(Expression<Func<Account, bool>> predicate)
+        {
+            IEnumerable<Account> account = null;
+
+            _unitOfWork.CreateTransaction();
+
+            try
+            {
+                account = await _unitOfWork.AccountRepository.Get(predicate);
 
                 _unitOfWork.Commit();
 
@@ -124,46 +121,18 @@ namespace BLL.Services
                 }
             }
 
-            return clubs;
+            return account;
         }
 
-        public async Task<IEnumerable<Club>> GetClub(Expression<Func<Club, bool>> predicate)
+        public async Task<bool> AccountExists(Expression<Func<Account, bool>> predicate)
         {
-            IEnumerable<Club> club = null;
+            IEnumerable<Account> account = null;
 
             _unitOfWork.CreateTransaction();
 
             try
             {
-                club = await _unitOfWork.ClubRepository.Get(predicate);
-
-                _unitOfWork.Commit();
-
-            }
-            catch (Exception e)
-            {
-                try
-                {
-                    _unitOfWork.RollBack();
-                }
-                catch (Exception e1)
-                {
-
-                }
-            }
-
-            return club;
-        }
-
-        public async Task<bool> ClubExists(Expression<Func<Club, bool>> predicate)
-        {
-            IEnumerable<Club> club = null;
-
-            _unitOfWork.CreateTransaction();
-
-            try
-            {
-                club = await _unitOfWork.ClubRepository.Get(predicate);
+                account = await _unitOfWork.AccountRepository.Get(predicate);
 
                 // await _unitOfWork.SaveAsync();
 
@@ -182,7 +151,7 @@ namespace BLL.Services
                 }
             }
 
-            return club.FirstOrDefault() != null;
+            return account.FirstOrDefault() != null;
 
         }
     }

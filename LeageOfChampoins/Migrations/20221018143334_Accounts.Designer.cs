@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LOFC.Migrations
 {
     [DbContext(typeof(DALContext))]
-    [Migration("20221018082613_Club")]
-    partial class Club
+    [Migration("20221018143334_Accounts")]
+    partial class Accounts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,27 @@ namespace LOFC.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("BLL.Entities.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LogIn")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accounts");
+                });
 
             modelBuilder.Entity("BLL.Entities.Club", b =>
                 {
@@ -151,6 +172,46 @@ namespace LOFC.Migrations
                     b.ToTable("Leagues");
                 });
 
+            modelBuilder.Entity("BLL.Entities.Owner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Capital")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("ClubId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("Owners");
+                });
+
             modelBuilder.Entity("BLL.Entities.Player", b =>
                 {
                     b.Property<int>("Id")
@@ -220,6 +281,23 @@ namespace LOFC.Migrations
                     b.Navigation("Couch");
 
                     b.Navigation("League");
+                });
+
+            modelBuilder.Entity("BLL.Entities.Owner", b =>
+                {
+                    b.HasOne("BLL.Entities.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BLL.Entities.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Club");
                 });
 
             modelBuilder.Entity("BLL.Entities.Player", b =>

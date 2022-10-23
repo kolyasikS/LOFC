@@ -3,6 +3,7 @@ using System;
 using DAL.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LOFC.Migrations
 {
     [DbContext(typeof(DALContext))]
-    partial class DALContextModelSnapshot : ModelSnapshot
+    [Migration("20221018142101_Owner")]
+    partial class Owner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,17 +32,17 @@ namespace LOFC.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("LogIn")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("logIn")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("BLL.Entities.Club", b =>
@@ -205,8 +207,7 @@ namespace LOFC.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("ClubId")
-                        .IsUnique();
+                    b.HasIndex("ClubId");
 
                     b.ToTable("Owners");
                 });
@@ -291,9 +292,8 @@ namespace LOFC.Migrations
                         .IsRequired();
 
                     b.HasOne("BLL.Entities.Club", "Club")
-                        .WithOne("Owner")
-                        .HasForeignKey("BLL.Entities.Owner", "ClubId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("ClubId");
 
                     b.Navigation("Account");
 
@@ -309,12 +309,6 @@ namespace LOFC.Migrations
                         .IsRequired();
 
                     b.Navigation("Club");
-                });
-
-            modelBuilder.Entity("BLL.Entities.Club", b =>
-                {
-                    b.Navigation("Owner")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

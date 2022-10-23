@@ -10,7 +10,7 @@ namespace BLL.Abstractions.Interfaces
 {
     public interface IClubService
     {
-        Task CreateClub(Club club);
+        Task<int> CreateClub(Club club);
         Task DeleteClub(Club club);
         Task UpdateClub(Club club);
 

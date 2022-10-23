@@ -1,6 +1,5 @@
 ﻿using BLL.Abstractions.Interfaces;
 using BLL.Entities;
-using DAL.Absractions.Interfaces;
 using DAL.Services;
 using System;
 using System.Collections.Generic;
@@ -11,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ClubService: IClubService
+    public class OwnerService : IOwnerService
     {
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
-        public ClubService()
+        public OwnerService()
         {
 
         }
 
-        public async Task<int> CreateClub(Club club)
+        public async Task CreateOwner(Owner owner)
         {
 
             _unitOfWork.CreateTransaction();
 
             try
             {
-                await _unitOfWork.ClubRepository.Insert(club);
+                await _unitOfWork.OwnerRepository.Insert(owner);
 
                 await _unitOfWork.SaveAsync();
 
@@ -44,43 +43,16 @@ namespace BLL.Services
 
                 }
             }
-            return club.Id;
 
         }
 
-        public async Task DeleteClub(Club club)
+        public async Task DeleteOwner(Owner owner)
         {
             _unitOfWork.CreateTransaction();
 
             try
             {
-                _unitOfWork.ClubRepository.Delete(club);
-
-                await _unitOfWork.SaveAsync();
-
-                _unitOfWork.Commit();
-
-            }
-            catch (Exception e)
-            {
-                try
-                {
-                    _unitOfWork.RollBack();
-                }
-                catch (Exception e1)
-                {
-
-                }
-            }
-        }
-
-        public async Task UpdateClub(Club club)
-        {
-            _unitOfWork.CreateTransaction();
-
-            try
-            {
-                _unitOfWork.ClubRepository.Update(club);
+                _unitOfWork.OwnerRepository.Delete(owner);
 
                 await _unitOfWork.SaveAsync();
 
@@ -100,14 +72,40 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<Club>> GetClubs()
+        public async Task UpdateOwner(Owner owner)
         {
-            IEnumerable<Club> clubs = null;
+            _unitOfWork.CreateTransaction();
+
+            try
+            {
+                _unitOfWork.OwnerRepository.Update(owner);
+
+                await _unitOfWork.SaveAsync();
+
+                _unitOfWork.Commit();
+
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    _unitOfWork.RollBack();
+                }
+                catch (Exception e1)
+                {
+
+                }
+            }
+        }
+
+        public async Task<IEnumerable<Owner>> GetOwners(Func<IQueryable<Owner>, IOrderedQueryable<Owner>>? orderBy = null)
+        {
+            IEnumerable<Owner> owners = null;
 
             _unitOfWork.CreateTransaction();
             try
             {
-                clubs = await _unitOfWork.ClubRepository.Get();
+                owners = await _unitOfWork.OwnerRepository.Get(null, orderBy);
 
                 _unitOfWork.Commit();
 
@@ -124,18 +122,18 @@ namespace BLL.Services
                 }
             }
 
-            return clubs;
+            return owners;
         }
 
-        public async Task<IEnumerable<Club>> GetClub(Expression<Func<Club, bool>> predicate)
+        public async Task<IEnumerable<Owner>> GetOwner(Expression<Func<Owner, bool>> predicate)
         {
-            IEnumerable<Club> club = null;
+            IEnumerable<Owner> owner = null;
 
             _unitOfWork.CreateTransaction();
 
             try
             {
-                club = await _unitOfWork.ClubRepository.Get(predicate);
+                owner = await _unitOfWork.OwnerRepository.Get(predicate);
 
                 _unitOfWork.Commit();
 
@@ -152,18 +150,18 @@ namespace BLL.Services
                 }
             }
 
-            return club;
+            return owner;
         }
 
-        public async Task<bool> ClubExists(Expression<Func<Club, bool>> predicate)
+        public async Task<bool> OwnerExists(Expression<Func<Owner, bool>> predicate)
         {
-            IEnumerable<Club> club = null;
+            IEnumerable<Owner> owner = null;
 
             _unitOfWork.CreateTransaction();
 
             try
             {
-                club = await _unitOfWork.ClubRepository.Get(predicate);
+                owner = await _unitOfWork.OwnerRepository.Get(predicate);
 
                 // await _unitOfWork.SaveAsync();
 
@@ -182,7 +180,7 @@ namespace BLL.Services
                 }
             }
 
-            return club.FirstOrDefault() != null;
+            return owner.FirstOrDefault() != null;
 
         }
     }

@@ -31,7 +31,11 @@ namespace PL.ViewModels
         public IEnumerable<Club> ClubList
         {
             get => _clubList;
-            set => Set(ref _clubList, value);
+            set
+            {
+                Set(ref _clubList, value);
+                FilterClubList =  value;
+            }
         }
         public IEnumerable<Club> FilterClubList
         {

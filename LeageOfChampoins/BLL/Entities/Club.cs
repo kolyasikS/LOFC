@@ -24,5 +24,6 @@ namespace BLL.Entities
         [ForeignKey("CouchId")]
         public int? CouchId { get; set; }
         public Couch? Couch { get; set; }
+        public Owner Owner { get; set; }
     }
 }
