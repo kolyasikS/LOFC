@@ -11,6 +11,8 @@ namespace DAL.DataBase
         public DbSet<Player> Players { get; set; }
         public DbSet<Owner> Owners { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<CharacteristicsFieldPlr> CharacteristicsFieldPlrs { get; set; }
+        public DbSet<CharacteristicsGoalkeeper> CharacteristicsGoalkeepers { get; set; }
         public DALContext() { }
         public DALContext(DbContextOptions<DALContext> options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

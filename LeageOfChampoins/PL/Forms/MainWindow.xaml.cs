@@ -28,13 +28,21 @@ namespace LOFC.PL.Forms
         }
         private void TEST()
         {
-            ClubsWindow clubs = new ClubsWindow();
-            clubs.ShowDialog();
+            //ClubsWindow clubs = new ClubsWindow();
+            //clubs.ShowDialog();
+            OwnersWindow owners = new OwnersWindow();
+            owners.ShowDialog();
         }
         private void ClubsClick(object sender, RoutedEventArgs e)
         {
-            ClubsWindow clubs = new ClubsWindow();
+            ClubsWindow clubs = new();
             clubs.ShowDialog();
+        }
+
+        private void OwnersClick(object sender, RoutedEventArgs e)
+        {
+            OwnersWindow owners = new();
+            owners.ShowDialog();
         }
     }
 }

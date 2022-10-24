@@ -21,6 +21,8 @@ namespace DAL.Services
         private GenericRepository<Couch> _couchRepository;
         private GenericRepository<Owner> _ownerRepository;
         private GenericRepository<Account> _accountRepository;
+        private GenericRepository<CharacteristicsFieldPlr> _characteristicsFieldPlrRepository;
+        private GenericRepository<CharacteristicsGoalkeeper> _characteristicsGoalkeeperRepository;
         private bool _disposed = false;
 
         public GenericRepository<Couch> CouchRepository
@@ -87,6 +89,28 @@ namespace DAL.Services
                     this._accountRepository = new GenericRepository<Account>(_context);
                 }
                 return this._accountRepository;
+            }
+        }
+        public GenericRepository<CharacteristicsFieldPlr> CharacteristicsFieldPlrRepository
+        {
+            get
+            {
+                if (_characteristicsFieldPlrRepository == null)
+                {
+                    this._characteristicsFieldPlrRepository = new GenericRepository<CharacteristicsFieldPlr>(_context);
+                }
+                return this._characteristicsFieldPlrRepository;
+            }
+        }
+        public GenericRepository<CharacteristicsGoalkeeper> CharacteristicsGoalkeeperRepository
+        {
+            get
+            {
+                if (_characteristicsGoalkeeperRepository == null)
+                {
+                    this._characteristicsGoalkeeperRepository = new GenericRepository<CharacteristicsGoalkeeper>(_context);
+                }
+                return this._characteristicsGoalkeeperRepository;
             }
         }
         public void CreateTransaction()

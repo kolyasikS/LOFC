@@ -7,12 +7,6 @@
         mc:Ignorable="d"
         Title="Clubs" Height="700" MaxHeight="700" MinHeight="500" Width="1200" Loaded="Window_Loaded">
     <Window.Resources>
-        <Style TargetType="ListBox">
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="MinHeight" Value="30"/>
-            <Setter Property="MinWidth" Value="200"/>
-            <Setter Property="Background" Value="#FF332E2E"/>
-        </Style>
         <Style TargetType="Button">
             <Setter Property="ContentTemplate">
                 <Setter.Value>
