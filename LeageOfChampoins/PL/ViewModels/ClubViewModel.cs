@@ -17,15 +17,15 @@ namespace PL.ViewModels
         public delegate void filterAll();
         public ClubViewModel(Task<IEnumerable<Club>> clubs, filterAll FilterClubAll)
         {
-            _clubList = new List<Club>(clubs.Result);
-            _filterClubList = new List<Club>(_clubList);
+            _clubList = clubs.Result.ToList();
+            _filterClubList = _clubList.ToList();
             _distinctSchemas = new HashSet<string>();
             _filterName = String.Empty;
             _filterAllCB = FilterClubAll;
 
             for (int i = 0; i < _clubList.Count(); i++)
             {
-                ((HashSet<string>)_distinctSchemas).Add(((List<Club>)_clubList)[i].Schema);
+                ((HashSet<string>)_distinctSchemas).Add(_clubList.ToList()[i].Schema);
             }
         }
         public IEnumerable<Club> ClubList

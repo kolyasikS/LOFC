@@ -106,13 +106,13 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<League>> GetLeagues()
+        public async Task<IEnumerable<League>> GetLeagues(Expression<Func<League, bool>>? filter = null, Func<IQueryable<League>, IOrderedQueryable<League>>? orderBy = null)
         {
             IEnumerable<League> leagues = null;
             
             try
             {
-                leagues = await _unitOfWork.LeagueRepository.Get();
+                leagues = await _unitOfWork.LeagueRepository.Get(filter, orderBy);
             }
             catch (Exception e)
             {

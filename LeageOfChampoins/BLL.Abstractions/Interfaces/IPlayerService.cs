@@ -14,7 +14,7 @@ namespace BLL.Abstractions.Interfaces
         Task DeletePlayer(Player player);
         Task UpdatePlayer(Player player);
 
-        public Task<IEnumerable<Player>> GetPlayers();
+        public Task<IEnumerable<Player>> GetPlayers(Expression<Func<Player, bool>>? filter = null, Func<IQueryable<Player>, IOrderedQueryable<Player>>? orderBy = null);
         public Task<bool> PlayerExists(Expression<Func<Player, bool>> predicate);
         public Task<IEnumerable<Player>> GetPlayer(Expression<Func<Player, bool>> predicate);
     }

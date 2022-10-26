@@ -1,4 +1,5 @@
-﻿using BLL.Entities;
+﻿using BLL.Abstractions.Interfaces;
+using BLL.Entities;
 using DAL.Services;
 using System;
 using System.Collections.Generic;
@@ -6,10 +7,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
- 
+
 namespace BLL.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
         public AccountService()
@@ -45,7 +46,7 @@ namespace BLL.Services
             return account.Id;
         }
 
-            public async Task DeleteAccount(Account account)
+        public async Task DeleteAccount(Account account)
         {
             _unitOfWork.CreateTransaction();
 
@@ -153,6 +154,33 @@ namespace BLL.Services
 
             return account.FirstOrDefault() != null;
 
+        }
+
+        public async Task<IEnumerable<Account>> GetAccounts()
+        {
+            IEnumerable<Account> accounts = null;
+
+            _unitOfWork.CreateTransaction();
+            try
+            {
+                accounts = await _unitOfWork.AccountRepository.Get();
+
+                _unitOfWork.Commit();
+
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    _unitOfWork.RollBack();
+                }
+                catch (Exception e1)
+                {
+
+                }
+            }
+
+            return accounts;
         }
     }
 }

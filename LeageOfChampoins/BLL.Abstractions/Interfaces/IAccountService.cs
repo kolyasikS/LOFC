@@ -14,8 +14,8 @@ namespace BLL.Abstractions.Interfaces
         Task DeleteAccount(Account account);
         Task UpdateAccount(Account account);
 
-        //public Task<IEnumerable<Account>> GetClubs();
+        public Task<IEnumerable<Account>> GetAccounts();
         public Task<bool> AccountExists(Expression<Func<Account, bool>> predicate);
-        public Task<IEnumerable<Club>> GetAccount(Expression<Func<Account, bool>> predicate);
+        public Task<IEnumerable<Account>> GetAccount(Expression<Func<Account, bool>> predicate);
     }
 }

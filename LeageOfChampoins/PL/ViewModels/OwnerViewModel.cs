@@ -66,7 +66,7 @@ namespace PL.ViewModels
         }
         public void FilterRange()
         {
-           FilterOwnerList = FilterOwnerList.Where(owner => owner.Capital > Convert.ToDouble(MinCapital) && owner.Capital < Convert.ToDouble(MaxCapital)).ToList();
+           FilterOwnerList = FilterOwnerList.Where(owner => owner.Capital >= Convert.ToDouble(MinCapital) && owner.Capital <= Convert.ToDouble(MaxCapital)).ToList();
         }
         public string FilterName
         {

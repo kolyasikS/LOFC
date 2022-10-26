@@ -1,5 +1,6 @@
 ﻿using BLL.Entities;
 using BLL.Services;
+using BLL.Users;
 using PL.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace LOFC.PL.Forms
             int accountId = await accountService.CreateAccount(new Account
             {
                 LogIn = (string)ownerData[4],
-                Password = (string)ownerData[5]
+                Password = User.CreatePasswordHash((string)ownerData[5])
             });
             await _ownerService.CreateOwner(new Owner
             {

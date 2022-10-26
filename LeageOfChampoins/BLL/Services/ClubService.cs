@@ -100,14 +100,14 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<Club>> GetClubs()
+        public async Task<IEnumerable<Club>> GetClubs(Expression<Func<Club, bool>>? filter = null, Func<IQueryable<Club>,IOrderedQueryable<Club>>? orderBy = null)
         {
             IEnumerable<Club> clubs = null;
 
             _unitOfWork.CreateTransaction();
             try
             {
-                clubs = await _unitOfWork.ClubRepository.Get();
+                clubs = await _unitOfWork.ClubRepository.Get(filter, orderBy);
 
                 _unitOfWork.Commit();
 

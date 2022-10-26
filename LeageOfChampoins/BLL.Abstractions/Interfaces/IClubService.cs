@@ -14,7 +14,7 @@ namespace BLL.Abstractions.Interfaces
         Task DeleteClub(Club club);
         Task UpdateClub(Club club);
 
-        public Task<IEnumerable<Club>> GetClubs();
+        public Task<IEnumerable<Club>> GetClubs(Expression<Func<Club, bool>>? filter = null, Func<IQueryable<Club>,IOrderedQueryable<Club>>? orderBy = null);
         public Task<bool> ClubExists(Expression<Func<Club, bool>> predicate);
         public Task<IEnumerable<Club>> GetClub(Expression<Func<Club, bool>> predicate);
     }

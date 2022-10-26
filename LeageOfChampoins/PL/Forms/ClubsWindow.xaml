@@ -58,7 +58,7 @@
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name"                      HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
                 <DataGridTextColumn Binding="{Binding Country}" Header="Country"                HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
                 <DataGridTextColumn Binding="{Binding DateFoundation}" Header="Date foundation" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="1.5*"/>
-                <DataGridTextColumn Binding="{Binding Cost}" Header="Cost"                      HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Cost}" Header="Cost (m)"                      HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
                 <DataGridTextColumn Binding="{Binding PosUEFARatingClubs}" Header="UEFA rating" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
                 <DataGridTextColumn Binding="{Binding AmountTrophies}" Header="Amount trophies" HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>
                 <DataGridTextColumn Binding="{Binding Schema}" Header="Schema"                  HeaderStyle="{StaticResource WrappedColumnHeaderStyle}"            Width="*"/>

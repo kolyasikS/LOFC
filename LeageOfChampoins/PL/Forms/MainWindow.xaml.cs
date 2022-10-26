@@ -28,10 +28,16 @@ namespace LOFC.PL.Forms
         }
         private void TEST()
         {
-            //ClubsWindow clubs = new ClubsWindow();
-            //clubs.ShowDialog();
-            OwnersWindow owners = new OwnersWindow();
-            owners.ShowDialog();
+            /*ClubsWindow clubs = new ClubsWindow();
+            clubs.ShowDialog();*/
+            /*OwnersWindow owners = new OwnersWindow();
+            owners.ShowDialog();*/
+            /* CouchesWindow couches = new();
+             couches.ShowDialog();*/
+            /*  PlayersWindow players = new();
+              players.ShowDialog();*/
+            Authorization auth = new();
+            auth.ShowDialog();
         }
         private void ClubsClick(object sender, RoutedEventArgs e)
         {
@@ -43,6 +49,24 @@ namespace LOFC.PL.Forms
         {
             OwnersWindow owners = new();
             owners.ShowDialog();
+        }
+
+        private void CouchesClick(object sender, RoutedEventArgs e)
+        {
+            CouchesWindow couches = new();
+            couches.ShowDialog();
+        }
+
+        private void LeaguesClick(object sender, RoutedEventArgs e)
+        {
+            LeaguesWindow leagues = new();
+            leagues.ShowDialog();
+        }
+
+        private void PlayersClick(object sender, RoutedEventArgs e)
+        {
+            PlayersWindow players = new();
+            players.ShowDialog();
         }
     }
 }
