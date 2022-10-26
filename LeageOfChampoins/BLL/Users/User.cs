@@ -19,7 +19,7 @@ namespace BLL.Users
             _user = String.Empty;
             this._owner = owner;
         }
-        public User(string user)
+        public User(string user = "Secretary")
         {
             this._user = user;
         }

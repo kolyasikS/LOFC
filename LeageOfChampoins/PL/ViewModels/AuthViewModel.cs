@@ -13,6 +13,12 @@ namespace PL.ViewModels
         public User User { get; private set; }
         private SecureString _password;
         private string _login;
+        public AuthViewModel()
+        {
+            _login = String.Empty;
+
+            User = new User();
+        }
         public SecureString Password
         {
             get => _password;
