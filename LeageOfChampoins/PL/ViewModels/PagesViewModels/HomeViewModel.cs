@@ -1,39 +1,38 @@
 ﻿using BLL.Entities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
-namespace PL.ViewModels
+namespace PL.ViewModels.PagesViewModels
 {
-    public class CreatingClubViewModel :ViewModel
+    public class HomeViewModel : ViewModel
     {
-        private IEnumerable<Club> _clubList;
         private IEnumerable<League> _leagueList;
-        private CreatingOwnerViewModel _ownerViewModel;
-       
 
-        //Club Data
         private string _clubName;
+        private string _clubInfoName;
         private int _posInUEFA;
         private int _posInLeague;
         private double _cost;
         private int _amountTrophies;
-        
+
         private DateTime? _dateFoundation;
+        private string _dateFoundationLabel;
 
         private string _schema;
         private League? _league;
-        public CreatingClubViewModel(IEnumerable<Club> clubs, Task<IEnumerable<League>> leagues)
+        private string _dateLabelFoundation;
+
+        public HomeViewModel(Club club, IEnumerable<League> leagues)
         {
-            InitLists(clubs, leagues);
-            _ownerViewModel = new CreatingOwnerViewModel();
-        }
-        public CreatingClubViewModel(IEnumerable<Club> clubs, Task<IEnumerable<League>> leagues, Club club)
-        {
-            InitLists(clubs, leagues);
-            ClubName = club.Name;
+            ClubName = "Barcelona";
+
+            LeagueList = leagues;
+            ClubInfoName = club.Name;
             PosInUEFA = club.PosUEFARatingClubs;
             Cost = club.Cost;
             AmountTrophies = club.AmountTrophies;
@@ -42,31 +41,25 @@ namespace PL.ViewModels
             Schema = club.Schema;
             League = new List<League>(LeagueList).Find(item => item.Id == club.LeagueId);
         }
-        private void InitLists(IEnumerable<Club> clubs, Task<IEnumerable<League>> leagues)
-        {
-            _clubList = clubs;
-            _leagueList = leagues.Result;
-
-            _dateFoundation = DateTime.Now;
-        }
-        public IEnumerable<Club> ClubList
-        {
-            get => _clubList;
-            set => Set(ref _clubList, value);
-        }
         public IEnumerable<League> LeagueList
         {
             get => _leagueList;
             set => Set(ref _leagueList, value);
         }
-        public CreatingOwnerViewModel OwnerViewModel
+        public string DateLabelFoundation
         {
-            get => _ownerViewModel;
+            get => _dateLabelFoundation;
+            set => Set(ref _dateLabelFoundation, value);
         }
         public string ClubName
         {
             get => _clubName;
             set => Set(ref _clubName, value);
+        }
+        public string ClubInfoName
+        {
+            get => _clubInfoName;
+            set => Set(ref _clubInfoName, value);
         }
         public int PosInUEFA
         {
@@ -86,8 +79,16 @@ namespace PL.ViewModels
         public DateTime? DateFoundation
         {
             get => _dateFoundation;
-            set => Set(ref _dateFoundation, value);
-            
+            set
+            {
+                DateFoundationLabel = value?.ToString("d", CultureInfo.GetCultureInfo("de-De")) ?? string.Empty;
+                Set(ref _dateFoundation, value);
+            }
+        }
+        public string DateFoundationLabel
+        {
+            get => _dateFoundationLabel;
+            set => Set(ref _dateFoundationLabel, value);
         }
         public int PosInLeague
         {
@@ -97,14 +98,15 @@ namespace PL.ViewModels
         public string Schema
         {
             get => _schema;
-            set {
+            set
+            {
                 if (value.Length < 11)
                 {
                     Set(ref _schema, value);
                 }
                 else
                 {
-                    Set(ref _schema, value[38 ..]);
+                    Set(ref _schema, value[38..]);
                 }
             }
         }
@@ -126,9 +128,6 @@ namespace PL.ViewModels
                 false, ClubName, PosInLeague, DateFoundation, PosInUEFA, Cost, AmountTrophies, Schema, League.Name,
             };
         }
-        public List<object> GetOwnerData()
-        {
-            return OwnerViewModel.GetOwnerData();
-        }
+       
     }
 }

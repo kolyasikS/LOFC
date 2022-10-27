@@ -35,33 +35,19 @@ namespace LOFC.PL.Forms
         {
             InitializeComponent();
 
-
             //TEST();
-
             this.DataContext = _authViewModel;
         }
-        public object? GetUser()
+        public User User
         {
-            return _authViewModel.GetUser();
+            get => _authViewModel.User;
         }
+        public 
         void TEST()
         {
 
             var password = "LOFCPassword";
-            /*  
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000);
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            byte[] hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-
-            string savedPasswordHash = Convert.ToBase64String(hashBytes);
-
-            string savedPasswordHash = DBContext.GetUser(u => u.UserName == user).Password;*/
             string savedPasswordHash;
             if (!File.Exists(PATH))
             {
@@ -83,16 +69,7 @@ namespace LOFC.PL.Forms
                 }
             }
             MessageBox.Show(Convert.ToBase64String(hash) + "  --  " + Convert.ToBase64String(hashBytes[16..]));
-            /*
-            if (File.Exists(PATH))
-            {
-                var jsonAccount = JsonConvert.SerializeObject(new Account()
-                {
-                    LogIn = "LOFCSecretary",
-                    Password = savedPasswordHash,
-                });
-                File.WriteAllText(PATH, jsonAccount);
-            }*/
+       
         }
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
@@ -114,34 +91,11 @@ namespace LOFC.PL.Forms
                     this.Close();
                 }
             }
-           /* var pointer = Marshal.SecureStringToGlobalAllocUnicode(_authViewModel.Password);
-            var password = Marshal.PtrToStringUni(pointer) ?? String.Empty;
-
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000);
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            byte[] hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: password,
-            salt: salt,
-            prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
-            numBytesRequested: 16));
-            Console.WriteLine($"Hashed: {hashed}");*/
-
         }
         private async Task<bool> isLogInFailed(string login, string password, SetUser? SetUser = null)
         {
             if (!File.Exists(PATH))
             {
-                //MessageBox.Show("FILE NOT EXISTS");
-                //return true;
                 var secretaryAccount = JsonConvert.DeserializeObject<Account>(File.ReadAllText(PATH));
                 if (isDataCoincide(login, password, secretaryAccount?.LogIn, secretaryAccount?.Password ?? String.Empty))
                 {

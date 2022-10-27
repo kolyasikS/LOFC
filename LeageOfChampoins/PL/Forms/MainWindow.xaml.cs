@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +23,8 @@ namespace LOFC.PL.Forms
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Club? _club;
+        private User _user;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,8 +41,10 @@ namespace LOFC.PL.Forms
              couches.ShowDialog();*/
             /*  PlayersWindow players = new();
               players.ShowDialog();*/
-            Authorization auth = new();
-            auth.ShowDialog();
+            ClubService clubService = new();
+            var club = clubService.GetClub(c => c.Id == 1).Result.First();
+            ClubManagement clubManagement = new ClubManagement(club, new Owner());
+            clubManagement.ShowDialog();
         }
         private void ClubsClick(object sender, RoutedEventArgs e)
         {
@@ -67,6 +74,44 @@ namespace LOFC.PL.Forms
         {
             PlayersWindow players = new();
             players.ShowDialog();
+        }
+
+        private void ManageClub(object sender, RoutedEventArgs e)
+        {
+            ClubManagement clubManagement = new ClubManagement(_club, _user.GetOwnerUser());
+            clubManagement.ShowDialog();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+           /* Authorization authorization = new Authorization();
+            authorization.ShowDialog();
+            try
+            {
+                var user = authorization.User;
+                if (user.GetOwnerUser() != null)
+                {
+                    _user.SetUser(user.GetOwnerUser());
+
+                    _club = SetClub(_user.GetOwnerUser());
+                }
+                else
+                {
+                    _user.SetUser(user.GetUser() ?? String.Empty);
+                    _club = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _club = null;
+            }*/
+        }
+        private Club SetClub(Owner owner)
+        {
+            ClubService clubService = new();
+            var club = clubService.GetClub(c => c.Id == owner.ClubId).Result.First();
+            return club;
         }
     }
 }

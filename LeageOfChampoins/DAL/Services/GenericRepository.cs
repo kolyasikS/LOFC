@@ -38,7 +38,6 @@ namespace DAL.Services
                 else
                 {
                     return query.ToList();
-                    //return await query.ToListAsync();
                 }
             }
             catch (Exception ex)

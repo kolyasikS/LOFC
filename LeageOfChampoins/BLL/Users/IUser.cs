@@ -9,8 +9,9 @@ namespace BLL.Users
 {
     public interface IUser
     {
-        public object? GetUser();
+        public string? GetUser();
         public void SetUser(string user);
         public void SetUser(Owner owner);
+        public Owner? GetOwnerUser();
     }
 }

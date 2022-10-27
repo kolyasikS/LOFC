@@ -23,22 +23,21 @@ namespace BLL.Users
         {
             this._user = user;
         }
-        public object? GetUser()
+        public string? GetUser()
         {
             if (!String.IsNullOrEmpty(_user))
             {
                 return _user;
-            }
-            else if (_owner != null)
-            {
-                return _owner;
             }
             else
             {
                 return null;
             }
         }
-
+        public Owner? GetOwnerUser()
+        {
+            return this._owner;
+        }
         public void SetUser(string user)
         {
             this._user = user;
