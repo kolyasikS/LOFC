@@ -42,8 +42,10 @@ namespace LOFC.PL.Forms
             /*  PlayersWindow players = new();
               players.ShowDialog();*/
             ClubService clubService = new();
-            var club = clubService.GetClub(c => c.Id == 1).Result.First();
-            ClubManagement clubManagement = new ClubManagement(club, new Owner());
+            var club = clubService.GetClub(c => c.Id == 24).Result.First();
+            OwnerService ownerService = new();
+            var owner = ownerService.GetOwner(o => o.Id == 22).Result.First();
+            ClubManagement clubManagement = new ClubManagement(club, owner);
             clubManagement.ShowDialog();
         }
         private void ClubsClick(object sender, RoutedEventArgs e)

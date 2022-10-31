@@ -62,22 +62,7 @@ namespace LOFC.PL.Forms
 
         private void Update(object sender, RoutedEventArgs e)
         {
-            var clubData = _editClubViewModel.GetClubData();
-
-            _club.Name = (string)clubData[1];
-            _club.posInLeague = (int)clubData[2];
-            _club.DateFoundation = DateOnly.FromDateTime((DateTime)clubData[3]);
-            _club.PosUEFARatingClubs = (int)clubData[4];
-            _club.Cost = (double)clubData[5];
-            _club.AmountTrophies = (int)clubData[6];
-            _club.Schema = (string)clubData[7];
-            _club.LeagueId = new List<League>(_leagueService.GetLeague(item => item.Name == (string)clubData[8]).Result)[0].Id;
-            _club.Country = new List<League>(_leagueService.GetLeague(item => item.Name == (string)clubData[8]).Result)[0].Country;
-
-            _clubService.UpdateClub(_club);
-
-            isUpdated = true;
-            this.Close();
+           
         }
 
         private void Cancel(object sender, RoutedEventArgs e)

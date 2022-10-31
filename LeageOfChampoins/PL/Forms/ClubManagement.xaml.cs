@@ -23,8 +23,6 @@ namespace LOFC.PL.Forms
     public partial class ClubManagement : Window
     {
         private ClubManagementViewModel _clubManagementViewModel;
-        private ClubService _clubService = new();
-        private OwnerService _ownerService = new();
         private PlayerService _playerService = new();
         private CouchService _couchService = new();
         private AccountService _accountService = new();
@@ -36,7 +34,8 @@ namespace LOFC.PL.Forms
         {
             InitializeComponent();
 
-            _clubManagementViewModel = new ClubManagementViewModel(club);
+            var players = _playerService.GetPlayers(p => p.ClubId == club.Id).Result.ToList();
+            _clubManagementViewModel = new ClubManagementViewModel(club, owner, players);
             this.DataContext = _clubManagementViewModel;
         }
 
@@ -44,5 +43,6 @@ namespace LOFC.PL.Forms
         {
             this.Close();
         }
+       
     }
 }

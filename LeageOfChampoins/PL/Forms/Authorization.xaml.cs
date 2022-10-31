@@ -54,7 +54,6 @@ namespace LOFC.PL.Forms
                 MessageBox.Show("FILE NOT EXISTS");
                 return;
             }
-            
             savedPasswordHash = JsonConvert.DeserializeObject<Account>(File.ReadAllText(PATH))?.Password ?? String.Empty;
             byte[] hashBytes = Convert.FromBase64String(savedPasswordHash);
             byte[] salt = new byte[16];
@@ -79,90 +78,31 @@ namespace LOFC.PL.Forms
             }
         }
 
-        private void LogIn_Click(object sender, RoutedEventArgs e)
+        private async void LogIn_Click(object sender, RoutedEventArgs e)
         {
             if (_authViewModel.Password != null && _authViewModel.Login != null)
             {
                 var pointer = Marshal.SecureStringToGlobalAllocUnicode(_authViewModel.Password);
                 var password = Marshal.PtrToStringUni(pointer) ?? String.Empty;
 
-                if (!isLogInFailed(_authViewModel.Login, password, _authViewModel.SetUser).Result)
+
+                OwnerService ownerService = new OwnerService();
+                AccountService accountService = new AccountService();
+                var owners = await ownerService.GetOwners();
+                var accounts = await accountService.GetAccounts();
+                UserPassword userPassword = new UserPassword(owners, accounts);
+
+                if (userPassword.HasAccount(_authViewModel.Login, password, PATH, _authViewModel.SetUser) != null)
                 {
                     this.Close();
                 }
-            }
-        }
-        private async Task<bool> isLogInFailed(string login, string password, SetUser? SetUser = null)
-        {
-            if (!File.Exists(PATH))
-            {
-                var secretaryAccount = JsonConvert.DeserializeObject<Account>(File.ReadAllText(PATH));
-                if (isDataCoincide(login, password, secretaryAccount?.LogIn, secretaryAccount?.Password ?? String.Empty))
+                else
                 {
-                    if (SetUser != null)
-                    {
-                        SetUser(User.Secretary);
-                    }
-                    return false;
+                    // such an account does'nt exist
                 }
             }
-            OwnerService ownerService = new OwnerService();
-            AccountService accountService = new AccountService();
-            var owners = await ownerService.GetOwners();//.Result.ToList();
-            var accounts = await accountService.GetAccounts();//.Result.ToList();
-
-            var result = owners.Join(accounts, own => own.AccountId, acc => acc.Id, (own, acc) => new { own, acc }).ToList();
-            
-            for (int i = 0; i < result.Count; i++)
-            {
-                if (isDataCoincide(login, password, result[i].acc.LogIn, result[i].acc.Password))
-                {
-                    if (SetUser != null)
-                    {
-                        SetUser(result[i]);
-                    }
-                    return false;
-                }
-            }
-
-            return true;
         }
-        private bool isDataCoincide(string newLogin, string newPass, string? savedLogin, string savedPass)
-        {
-
-            
-            byte[] hashBytes;
-            try
-            {
-                hashBytes = Convert.FromBase64String(savedPass);
-            }
-            catch (Exception)
-            {
-                var plainTextBytes = Encoding.UTF8.GetBytes(savedPass);
-                savedPass = Convert.ToBase64String(plainTextBytes);
-                hashBytes = Convert.FromBase64String(savedPass);
-            }
-
-            byte[] salt = new byte[16];
-
-            Array.Copy(hashBytes, 0, salt, 0, 16);
-
-            var pbkdf2 = new Rfc2898DeriveBytes(newPass, salt, 100000);
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            for (int i = 0; i < 20; i++)
-            {
-                if (hashBytes[i + 16] != hash[i])
-                {
-                    return false;
-                }
-            }
-            if (newLogin != savedLogin)
-            {
-                return false;
-            }
-            return true;
-        }
+        
 
         private void AsGuest_Click(object sender, RoutedEventArgs e)
         {

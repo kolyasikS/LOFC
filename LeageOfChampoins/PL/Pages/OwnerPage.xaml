@@ -3,13 +3,87 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:LOFC.PL.Pages"
+      xmlns:local="clr-namespace:LOFC.PL.Pages" xmlns:viewmodels="clr-namespace:PL.ViewModels.PagesViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:OwnerPageViewModel}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1000"
       Title="OwnerPage">
 
-    <Grid>
-        <Label FontSize="100" Content="OWNER"/>
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Background" Value="#FF6A6168"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="{x:Type DatePicker}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Height" Value="25"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Page.Resources>
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
+        <Label HorizontalAlignment="Center" VerticalAlignment="Top" 
+               FontSize="60" Content="{Binding OwnerName}"
+               Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
+        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="#FF130665" BorderThickness="2"
+                Margin="5,5,5,0" Height="250" VerticalAlignment="Top" Width="1000">
+            <StackPanel x:Name="mainStacklPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Width="auto" Height="auto">
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158" Height="auto">
+                        <Label   Height="35" Content="Name" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Visibility="Collapsed"
+                                 Text="{Binding OwnerName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding OwnerName}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Surname" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Visibility="Collapsed"
+                                 Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Surname}"/>
+                        <Label x:Uid="EditedBox" Content="*can be empty" Visibility="Collapsed"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Nation" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Visibility="Collapsed"
+                                 Text="{Binding Nation, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Nation}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="70">
+                        <Label   Height="35" Content="Age" FontSize="16"/>
+                        <ComboBox x:Uid="EditedBox" x:Name="AgeCB" Height="30" FontSize="16" VerticalContentAlignment="Center" Visibility="Collapsed"
+                                  SelectedItem="{Binding Age, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Age}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 10 0">
+                        <Label   Height="35" Content="Capital (in millions)" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Visibility="Collapsed"
+                                 Text="{Binding Capital, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Capital}"/>
+                    </StackPanel>
+                </DockPanel>
+
+
+            </StackPanel>
+        </Border>
+        <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" LastChildFill="False">
+            <Button DockPanel.Dock="Right" Margin="0 0 20 0" Content="Edit" Click="EditClick"/>
+            <Button x:Name="cancelButton" DockPanel.Dock="Right" Margin="0 0 20 0" Content="Cancel" Click="CancelClick" Visibility="Collapsed"/>
+            <Button DockPanel.Dock="Left" Margin="20 0 0 0" Content="Change password" Width="200" Click="ChangePasswordClick"/>
+            <Button x:Name="updateButton" DockPanel.Dock="Left" Margin="20 0 0 0" Content="Update" Click="UpdateClick" Visibility="Collapsed"/>
+        </DockPanel>
     </Grid>
 </Page>

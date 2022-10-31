@@ -9,30 +9,31 @@ using System.Windows.Controls;
 
 namespace PL.ViewModels.PagesViewModels
 {
-    public class HomeViewModel : ViewModel
+    public class HomePageViewModel : ViewModel
     {
         private IEnumerable<League> _leagueList;
 
         private string _clubName;
-        private string _clubInfoName;
+        //private string _clubInfoName;
+
         private int _posInUEFA;
         private int _posInLeague;
         private double _cost;
         private int _amountTrophies;
 
-        private DateTime? _dateFoundation;
+        private DateTime _dateFoundation;
         private string _dateFoundationLabel;
 
+        private string _country;
+        private char? _group;
         private string _schema;
-        private League? _league;
+        private League _league;
         private string _dateLabelFoundation;
 
-        public HomeViewModel(Club club, IEnumerable<League> leagues)
+        public HomePageViewModel(Club club, IEnumerable<League> leagues)
         {
-            ClubName = "Barcelona";
-
             LeagueList = leagues;
-            ClubInfoName = club.Name;
+            ClubName = club.Name;
             PosInUEFA = club.PosUEFARatingClubs;
             Cost = club.Cost;
             AmountTrophies = club.AmountTrophies;
@@ -40,6 +41,32 @@ namespace PL.ViewModels.PagesViewModels
             PosInLeague = club.posInLeague;
             Schema = club.Schema;
             League = new List<League>(LeagueList).Find(item => item.Id == club.LeagueId);
+            Country = club.Country;
+            Group = club.Group;
+        }
+        public void UpdateClub(Club club)
+        {
+            club.Name = ClubName;
+            club.PosUEFARatingClubs = PosInUEFA;
+            club.Cost = Cost;
+            club.AmountTrophies = AmountTrophies;
+            club.DateFoundation = DateOnly.FromDateTime(DateFoundation);
+            club.posInLeague = PosInLeague;
+            club.Schema = Schema;
+            club.League = League ?? club.League;
+            club.Country = Country;
+            club.Group = Group;
+        }
+        public void SetClubData(Club club)
+        {
+            ClubName = club.Name;
+            PosInUEFA = club.PosUEFARatingClubs;
+            Cost = club.Cost;
+            AmountTrophies = club.AmountTrophies;
+            DateFoundation = club.DateFoundation.ToDateTime(new TimeOnly(0));
+            PosInLeague = club.posInLeague;
+            Schema = club.Schema;
+            League = new List<League>(LeagueList).Find(item => item.Id == club.LeagueId) ?? new League();
         }
         public IEnumerable<League> LeagueList
         {
@@ -56,11 +83,11 @@ namespace PL.ViewModels.PagesViewModels
             get => _clubName;
             set => Set(ref _clubName, value);
         }
-        public string ClubInfoName
+       /* public string ClubInfoName
         {
             get => _clubInfoName;
             set => Set(ref _clubInfoName, value);
-        }
+        }*/
         public int PosInUEFA
         {
             get => _posInUEFA;
@@ -76,12 +103,12 @@ namespace PL.ViewModels.PagesViewModels
             get => _amountTrophies;
             set => Set(ref _amountTrophies, value);
         }
-        public DateTime? DateFoundation
+        public DateTime DateFoundation
         {
             get => _dateFoundation;
             set
             {
-                DateFoundationLabel = value?.ToString("d", CultureInfo.GetCultureInfo("de-De")) ?? string.Empty;
+                DateFoundationLabel = value.ToString("d", CultureInfo.GetCultureInfo("de-De")) ?? string.Empty;
                 Set(ref _dateFoundation, value);
             }
         }
@@ -110,24 +137,20 @@ namespace PL.ViewModels.PagesViewModels
                 }
             }
         }
-        public League? League
+        public League League
         {
             get => _league;
             set => Set(ref _league, value);
         }
-        public List<object> GetClubData()
+        public string Country
         {
-            if (DateFoundation == null)
-            {
-                return new List<object>() {
-                    true
-                };
-            }
-            return new List<object>()
-            {
-                false, ClubName, PosInLeague, DateFoundation, PosInUEFA, Cost, AmountTrophies, Schema, League.Name,
-            };
+            get => _country;
+            set => Set(ref _country, value);
         }
-       
+        public char? Group
+        {
+            get => _group;
+            set => Set(ref _group, value);
+        }
     }
 }
