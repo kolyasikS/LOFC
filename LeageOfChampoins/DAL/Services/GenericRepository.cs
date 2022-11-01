@@ -33,12 +33,11 @@ namespace DAL.Services
 
                 if (orderBy != null)
                 {
-                    return await orderBy(query).ToListAsync(); // can be error
+                    return orderBy(query).ToList(); // can be error
                 }
                 else
                 {
                     return query.ToList();
-                    //return await query.ToListAsync();
                 }
             }
             catch (Exception ex)

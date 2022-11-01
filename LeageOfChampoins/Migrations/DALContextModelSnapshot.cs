@@ -22,6 +22,99 @@ namespace LOFC.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("BLL.Entities.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LogIn")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accounts");
+                });
+
+            modelBuilder.Entity("BLL.Entities.CharacteristicsFieldPlr", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Defending")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Dribbling")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Pass")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Physics")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Shooting")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Speed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("playerId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("playerId");
+
+                    b.ToTable("CharacteristicsFieldPlrs");
+                });
+
+            modelBuilder.Entity("BLL.Entities.CharacteristicsGoalkeeper", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Diving")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Handling")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Kicking")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Positioning")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Reflexes")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Speed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("playerId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("playerId");
+
+                    b.ToTable("CharacteristicsGoalkeepers");
+                });
+
             modelBuilder.Entity("BLL.Entities.Club", b =>
                 {
                     b.Property<int>("Id")
@@ -149,6 +242,47 @@ namespace LOFC.Migrations
                     b.ToTable("Leagues");
                 });
 
+            modelBuilder.Entity("BLL.Entities.Owner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Capital")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("ClubId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("ClubId")
+                        .IsUnique();
+
+                    b.ToTable("Owners");
+                });
+
             modelBuilder.Entity("BLL.Entities.Player", b =>
                 {
                     b.Property<int>("Id")
@@ -203,6 +337,28 @@ namespace LOFC.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("BLL.Entities.CharacteristicsFieldPlr", b =>
+                {
+                    b.HasOne("BLL.Entities.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("playerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("BLL.Entities.CharacteristicsGoalkeeper", b =>
+                {
+                    b.HasOne("BLL.Entities.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("playerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("BLL.Entities.Club", b =>
                 {
                     b.HasOne("BLL.Entities.Couch", "Couch")
@@ -220,6 +376,24 @@ namespace LOFC.Migrations
                     b.Navigation("League");
                 });
 
+            modelBuilder.Entity("BLL.Entities.Owner", b =>
+                {
+                    b.HasOne("BLL.Entities.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BLL.Entities.Club", "Club")
+                        .WithOne("Owner")
+                        .HasForeignKey("BLL.Entities.Owner", "ClubId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Club");
+                });
+
             modelBuilder.Entity("BLL.Entities.Player", b =>
                 {
                     b.HasOne("BLL.Entities.Club", "Club")
@@ -229,6 +403,12 @@ namespace LOFC.Migrations
                         .IsRequired();
 
                     b.Navigation("Club");
+                });
+
+            modelBuilder.Entity("BLL.Entities.Club", b =>
+                {
+                    b.Navigation("Owner")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

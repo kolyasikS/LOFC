@@ -3,10 +3,148 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LOFC.PL.Forms"
+        xmlns:local="clr-namespace:LOFC.PL.Forms" xmlns:viewmodels="clr-namespace:PL.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CreatingClubViewModel}"
         mc:Ignorable="d"
-        Title="CreatingClub" Height="450" Width="800">
+        Title="CreatingClub" MinHeight="640" Width="905" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Background" Value="#FF6A6168"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="{x:Type DatePicker}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Height" Value="25"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="120"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Column="0" Grid.Row="0" BorderBrush="#FF130665" BorderThickness="2" Margin="5,5,5,0" Height="220" Grid.RowSpan="2" VerticalAlignment="Top">
+            <StackPanel>
+                <DockPanel LastChildFill="False">
+                    <Label DockPanel.Dock="Top" Content="Owner" HorizontalAlignment="Center" FontSize="25"/>
+                    <StackPanel DockPanel.Dock="Left" Margin="60 0 20 0" Width="158">
+                        <Label   Height="35" Content="Name" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding OwnerViewModel.OwnerName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Surname" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding OwnerViewModel.Surname, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label   Content="*can be empty"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Nation" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding OwnerViewModel.Nation, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="70">
+                        <Label   Height="35" Content="Age" FontSize="16"/>
+                        <ComboBox x:Name="AgeCB" Height="30" FontSize="16" VerticalContentAlignment="Center"
+                                  SelectedItem="{Binding OwnerViewModel.Age, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 10 0">
+                        <Label   Height="35" Content="Capital (in millions)" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding OwnerViewModel.Capital, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left" Margin="60 0 20 0" Width="158">
+                        <Label   Height="35" Content="LogIn" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding OwnerViewModel.LogIn, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Password" FontSize="16"/>
+                        <PasswordBox Height="30" FontSize="16" VerticalContentAlignment="Center" PasswordChanged="PasswordBox_PasswordChanged" />
+                    </StackPanel>
+                    
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="0" Grid.Row="1" BorderBrush="#FF130665" BorderThickness="2" Margin="5,5,5,0" Height="220" Grid.RowSpan="2" VerticalAlignment="Top">
+            <StackPanel>
+                <DockPanel LastChildFill="False" Margin="0 0 0 10">
+                    <Label DockPanel.Dock="Top" Content="Club" HorizontalAlignment="Center" FontSize="25"/>
+                    <StackPanel DockPanel.Dock="Left" Margin="60 0 20 0" Width="158">
+                        <Label   Height="35" Content="Name" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding ClubName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Position in league" FontSize="16"/>
+                        <ComboBox x:Name="posLeagueCB" Height="30" FontSize="16" VerticalContentAlignment="Center"
+                                  SelectedItem="{Binding PosInLeague, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Date foundation" FontSize="16"/>
+                        <Canvas HorizontalAlignment="Stretch">
+                            <Label x:Name="dateLabel" Width="117" Height="28" Canvas.Top="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <DatePicker Language="us" HorizontalAlignment="Center" Canvas.Left="122" 
+                                        VerticalAlignment="Center" Width="32" SelectedDateChanged="DatePicker_SelectedDateChanged" 
+                                        Height="28" Canvas.Top="1" SelectedDate="{Binding Path=DateFoundation, UpdateSourceTrigger=PropertyChanged}">
+                            </DatePicker>
+                        </Canvas>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="175">
+                        <Label   Height="35" Content="Position in UEFA Rating" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding PosInUEFA, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                </DockPanel>
+
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left" Margin="60 0 20 0" Width="160">
+                        <Label   Height="35" Content="Cost (in millions)" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding Cost, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Amount trophies" FontSize="16"/>
+                        <TextBox Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding AmountTrophies, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Schema" FontSize="16"/>
+                        <ComboBox Height="30" FontSize="16" VerticalContentAlignment="Center"
+                                  SelectedItem="{Binding Schema, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBoxItem Content="3-4-3"/>
+                            <ComboBoxItem Content="3-5-2"/>
+                            <ComboBoxItem Content="4-1-3-2"/>
+                            <ComboBoxItem Content="4-1-4-1"/>
+                            <ComboBoxItem Content="4-2-3-1"/>
+                            <ComboBoxItem Content="4-2-4"/>
+                            <ComboBoxItem Content="4-3-2-1"/>
+                            <ComboBoxItem Content="4-3-3"/>
+                            <ComboBoxItem Content="4-4-2"/>
+                            <ComboBoxItem Content="4-5-1"/>
+                            <ComboBoxItem Content="5-3-2"/>
+                            <ComboBoxItem Content="5-4-1"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="175">
+                        <Label   Height="35" Content="League" FontSize="16"/>
+                        <ComboBox Height="30" FontSize="16" VerticalContentAlignment="Center" ItemsSource="{Binding LeagueList}" 
+                                  DisplayMemberPath="Name" SelectionChanged="LeagueSelectionChanged"
+                                  SelectedItem="{Binding League, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
+        <DockPanel LastChildFill="False" Grid.Column="0" Grid.Row="2" >
+            
+            <Button Content="Cancel" DockPanel.Dock="Right" Margin="20 0 20 0" Click="Cancel"/>
+            <Button Content="OK" DockPanel.Dock="Right" Click="Create"/>
+        </DockPanel>
     </Grid>
 </Window>

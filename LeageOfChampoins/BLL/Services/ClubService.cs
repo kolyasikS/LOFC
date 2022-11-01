@@ -13,20 +13,13 @@ namespace BLL.Services
 {
     public class ClubService: IClubService
     {
-        //private readonly IGenericRepository<Club> _genericRepository;
-
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
-
-        //public ClubService(IGenericRepository<Club> repository)
-        //{
-        //    _genericRepository = repository;
-        //}
         public ClubService()
         {
 
         }
 
-        public async Task CreateClub(Club club)
+        public async Task<int> CreateClub(Club club)
         {
 
             _unitOfWork.CreateTransaction();
@@ -51,6 +44,7 @@ namespace BLL.Services
 
                 }
             }
+            return club.Id;
 
         }
 
@@ -106,14 +100,14 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<Club>> GetClubs()
+        public async Task<IEnumerable<Club>> GetClubs(Expression<Func<Club, bool>>? filter = null, Func<IQueryable<Club>,IOrderedQueryable<Club>>? orderBy = null)
         {
             IEnumerable<Club> clubs = null;
 
             _unitOfWork.CreateTransaction();
             try
             {
-                clubs = await _unitOfWork.ClubRepository.Get();
+                clubs = await _unitOfWork.ClubRepository.Get(filter, orderBy);
 
                 _unitOfWork.Commit();
 

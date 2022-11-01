@@ -15,54 +15,102 @@ namespace DAL.Services
     {
         private readonly DALContext _context = new DALContext();
         private IDbContextTransaction _transaction;
-        private GenericRepository<League> leagueRepository;
-        private GenericRepository<Player> playerRepository;
-        private GenericRepository<Club> clubRepository;
-        private GenericRepository<Couch> couchRepository;
+        private GenericRepository<League> _leagueRepository;
+        private GenericRepository<Player> _playerRepository;
+        private GenericRepository<Club> _clubRepository;
+        private GenericRepository<Couch> _couchRepository;
+        private GenericRepository<Owner> _ownerRepository;
+        private GenericRepository<Account> _accountRepository;
+        private GenericRepository<CharacteristicsFieldPlr> _characteristicsFieldPlrRepository;
+        private GenericRepository<CharacteristicsGoalkeeper> _characteristicsGoalkeeperRepository;
         private bool _disposed = false;
 
         public GenericRepository<Couch> CouchRepository
         {
             get
             {
-                if (couchRepository == null)
+                if (_couchRepository == null)
                 {
-                    this.couchRepository = new GenericRepository<Couch>(_context);
+                    this._couchRepository = new GenericRepository<Couch>(_context);
                 }
-                return this.couchRepository;
+                return this._couchRepository;
             }
         }
         public GenericRepository<Club> ClubRepository
         {
             get 
             {
-                if (clubRepository == null)
+                if (_clubRepository == null)
                 {
-                    this.clubRepository = new GenericRepository<Club>(_context);
+                    this._clubRepository = new GenericRepository<Club>(_context);
                 }
-                return this.clubRepository; 
+                return this._clubRepository; 
             }
         }
         public GenericRepository<League> LeagueRepository
         {
             get 
             {
-                if (leagueRepository == null)
+                if (_leagueRepository == null)
                 {
-                    this.leagueRepository = new GenericRepository<League>(_context);
+                    this._leagueRepository = new GenericRepository<League>(_context);
                 }
-                return this.leagueRepository; 
+                return this._leagueRepository; 
             }
         }
         public GenericRepository<Player> PlayerRepository
         {
             get
             {
-                if (playerRepository == null)
+                if (_playerRepository == null)
                 {
-                    this.playerRepository = new GenericRepository<Player>(_context);
+                    this._playerRepository = new GenericRepository<Player>(_context);
                 }
-                return this.playerRepository;
+                return this._playerRepository;
+            }
+        }
+        public GenericRepository<Owner> OwnerRepository
+        {
+            get
+            {
+                if (_ownerRepository == null)
+                {
+                    this._ownerRepository = new GenericRepository<Owner>(_context);
+                }
+                return this._ownerRepository;
+            }
+        }
+        public GenericRepository<Account> AccountRepository
+        {
+            get
+            {
+                if (_accountRepository == null)
+                {
+                    this._accountRepository = new GenericRepository<Account>(_context);
+                }
+                return this._accountRepository;
+            }
+        }
+        public GenericRepository<CharacteristicsFieldPlr> CharacteristicsFieldPlrRepository
+        {
+            get
+            {
+                if (_characteristicsFieldPlrRepository == null)
+                {
+                    this._characteristicsFieldPlrRepository = new GenericRepository<CharacteristicsFieldPlr>(_context);
+                }
+                return this._characteristicsFieldPlrRepository;
+            }
+        }
+        public GenericRepository<CharacteristicsGoalkeeper> CharacteristicsGoalkeeperRepository
+        {
+            get
+            {
+                if (_characteristicsGoalkeeperRepository == null)
+                {
+                    this._characteristicsGoalkeeperRepository = new GenericRepository<CharacteristicsGoalkeeper>(_context);
+                }
+                return this._characteristicsGoalkeeperRepository;
             }
         }
         public void CreateTransaction()

@@ -99,13 +99,13 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<Player>> GetPlayers()
+        public async Task<IEnumerable<Player>> GetPlayers(Expression<Func<Player, bool>>? filter = null, Func<IQueryable<Player>, IOrderedQueryable<Player>>? orderBy = null)
         {
             IEnumerable<Player> players = null;
             
             try
             {
-                players = await _unitOfWork.PlayerRepository.Get();
+                players = await _unitOfWork.PlayerRepository.Get(filter, orderBy);
             }
             catch (Exception e)
             {

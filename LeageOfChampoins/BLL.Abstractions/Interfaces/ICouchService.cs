@@ -10,8 +10,8 @@ namespace BLL.Abstractions.Interfaces
 {
     public interface ICouchService
     {
-        Task CreateCouch(Couch player);
-        Task DeleteCouch(Couch player);
+        Task<int> CreateCouch(Couch player);
+        //Task DeleteCouch(Couch player);
         Task UpdateCouch(Couch player);
 
         public Task<IEnumerable<Couch>> GetCouches();

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LeageOfChampoins"
         mc:Ignorable="d"
-        Title="Home" Height="700" MaxHeight="700" MinHeight="500" Width="1400">
+        Title="Home" Height="700" MaxHeight="700" MinHeight="500" Width="1400" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="ListBox">
             <Setter Property="FontSize" Value="10"/>
@@ -50,10 +50,20 @@
         <ListBox Foreground="#FFADAD9E" BorderBrush="#FF5A0000" Grid.Row="2" Grid.Column="4" Grid.RowSpan="2" Height="150" Width="250"></ListBox>
         <!--ListBoxes-->
 
-        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="20 0 0 0" Click="ClubsClick">Clubs</Button>
+        <StackPanel Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" VerticalAlignment="Center">
+            <Button HorizontalAlignment="Center" Margin="20 0 0 40" Click="ClubsClick">Clubs</Button>
+            <Button HorizontalAlignment="Center" Margin="20 0 0 40"  Click="OwnersClick">Owners</Button>
+            <Button HorizontalAlignment="Center" Margin="20 0 0 40" Click="CouchesClick">Couches</Button>
+            <Button HorizontalAlignment="Center" Margin="20 0 0 40"  Click="LeaguesClick">Leagues</Button>
+            <Button HorizontalAlignment="Center" Margin="20 0 0 0"  Click="PlayersClick">Players</Button>
+        </StackPanel>
+
+        <Button Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" Margin="20 0 0 0" Width="180">Change account</Button>
         <Button Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Margin="20 0 0 0">Draw</Button>
         <Button Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" Margin="20 0 0 0">Print</Button>
         <Button Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" Margin="20 0 0 0">Edit groups</Button>
-        <Button Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" Margin="20 0 0 0">Accounts</Button>
+        <Border CornerRadius="10"  Grid.Row="4" Grid.Column="4" HorizontalAlignment="Center" Margin="20 0 0 0" BorderBrush="Black" BorderThickness="4" Height="60">
+            <Button Width="180" Height="60" Background="#FFD3DEE2" Foreground="#FF091041" FontWeight="Bold" FontFamily="Arial Black" Click="ManageClub">Manage club</Button>
+        </Border>
     </Grid>
 </Window>

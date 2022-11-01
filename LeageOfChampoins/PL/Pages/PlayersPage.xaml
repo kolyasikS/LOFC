@@ -1,0 +1,149 @@
+﻿<Page x:Class="LOFC.PL.Pages.PlayersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:LOFC.PL.Pages" xmlns:viewmodels="clr-namespace:PL.ViewModels.PagesViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:PlayerPageViewModel}"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="1000"
+      Title="PlayersPage">
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Background" Value="#FF6A6168"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Page.Resources>
+    <Grid Background="White" x:Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel x:Name="havingNotCouch" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Visibility="Collapsed">
+            <Label FontSize="35" Content="Club has not players..." Background="#FF272C41" Foreground="#FFB9D0DF"/>
+            <Button DockPanel.Dock="Right" Content="Appoint" Margin="0 50 0 0" Click="AppointClick"/>
+        </StackPanel>
+
+        <Label x:Uid="mainBox" HorizontalAlignment="Center" VerticalAlignment="Top" 
+               FontSize="60" Content="{Binding PlayerFullName}" Visibility="Visible"
+               Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
+        <Border x:Uid="mainBox" x:Name="playerCard" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="#FF130665" BorderThickness="2"
+                Margin="5,5,5,0" Height="400" VerticalAlignment="Top" Width="1000" Visibility="Visible">
+            <StackPanel x:Name="mainStacklPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Width="auto" Height="auto">
+                <ComboBox x:Name="playersCB" ItemsSource="{Binding PlayerList, UpdateSourceTrigger=PropertyChanged}" FontSize="16" 
+                          Width="200" HorizontalAlignment="Left" Margin="20 0 0 20" Height="30"
+                          SelectedItem="{Binding SelectedPlayer, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1} - {2}">
+                                        <Binding Path="Name"/>
+                                        <Binding Path="Surname"/>
+                                        <Binding Path="Number"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <DockPanel LastChildFill="False" Margin="0 0 0 30" >
+                    <StackPanel DockPanel.Dock="Left" Margin="20 0 20 0" Width="158">
+                        <Label   Height="35" Content="Name" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding PlayerName}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 30 0" Width="158">
+                        <Label   Height="35" Content="Surname" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding PlayerSurname, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding PlayerSurname}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="20 0 20 0" Width="200">
+                        <Label   Height="35" Content="Amount individual awards" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" 
+                                 Text="{Binding IndividualAwards, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding IndividualAwards}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="70">
+                        <Label   Height="35" Content="Age" FontSize="16"/>
+                        <ComboBox x:Uid="EditedBox" x:Name="AgeCB" Height="30" FontSize="16" VerticalContentAlignment="Center" Visibility="Collapsed"
+                                  SelectedItem="{Binding Age, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Age}"/>
+                    </StackPanel>
+
+                </DockPanel>
+
+                <DockPanel LastChildFill="False" Height="auto" Margin="0 0 0 30">
+                    <StackPanel DockPanel.Dock="Left" Margin="20 0 20 0" Width="160">
+                        <Label   Height="35" Content="Number" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Number}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 20 0" Width="158">
+                        <Label   Height="35" Content="Position" FontSize="16"/>
+                        <ComboBox x:Uid="EditedBox" x:Name="positionCB" Height="30" FontSize="16" 
+                                  VerticalContentAlignment="Center" SelectedItem="{Binding Position, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Position}"/>
+
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="30 0 20 0" Width="160">
+                        <Label   Height="35" Content="Salary" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding Salary, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" 
+                               ContentStringFormat="{}{0} mln"
+                               Content="{Binding Salary}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="40 0 20 0" Width="160">
+                        <Label   Height="35" Content="Cost" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding Cost, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16"
+                               ContentStringFormat="{}{0} mln"
+                               Content="{Binding Cost}"/>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel LastChildFill="False" Height="auto" Margin="0 0 0 20">
+                    <StackPanel DockPanel.Dock="Left" Margin="20 0 20 0" Width="160">
+                        <Label   Height="35" Content="Games" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding Games, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Games}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="00 0 20 0" Width="160">
+                        <Label   Height="35" Content="Goals" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding Goals, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Goals}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="30 0 20 0" Width="160">
+                        <Label   Height="35" Content="Assists" FontSize="16"/>
+                        <TextBox x:Uid="EditedBox" Height="30" FontSize="16" VerticalContentAlignment="Center" Text="{Binding Assists, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="Collapsed"/>
+                        <Label x:Uid="notEditedLabel" VerticalAlignment="Center" Height="30" FontSize="16" Content="{Binding Assists}"/>
+                    </StackPanel>
+                </DockPanel>
+                
+            </StackPanel>
+        </Border>
+        <DockPanel x:Name="EditDP" x:Uid="mainBox" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" LastChildFill="False" Visibility="Visible">
+            <Button DockPanel.Dock="Right" Margin="0 0 60 0" Content="Edit" Click="EditClick"/>
+            <Button x:Name="cancelButton" DockPanel.Dock="Right" Margin="0 0 20 0" Content="Cancel" Click="CancelClick" Visibility="Collapsed"/>
+            <Button x:Name="signButton" DockPanel.Dock="Left" Margin="60 0 0 0" Content="Sign" Click="SignClick" Visibility="Visible"/>
+            <Button x:Name="updateButton" DockPanel.Dock="Left" Margin="20 0 0 0" Content="Update" Click="UpdateClick" Visibility="Collapsed"/>
+        </DockPanel>
+    </Grid>
+</Page>
