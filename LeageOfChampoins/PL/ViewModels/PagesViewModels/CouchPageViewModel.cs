@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PL.ViewModels.PagesViewModels
 {
@@ -15,9 +16,9 @@ namespace PL.ViewModels.PagesViewModels
         //private string _clubInfoName;
         private string _schema;
 
-        private int _amountTrophies;
-        private int _age;
-        private int _games;
+        private int? _amountTrophies;
+        private int? _age;
+        private int? _games;
 
         private string _pointsPerGame;
         private string _salary;
@@ -25,8 +26,13 @@ namespace PL.ViewModels.PagesViewModels
         private DateTime? _dateExpirContract;
         private string _dateExpirContractLabel;
 
-        public CouchPageViewModel(Couch couch)
+        public CouchPageViewModel(Couch? couch)
         {
+            if (couch == null)
+            {
+                SetDefault();
+                return;
+            }
             CouchName = couch.Name;
             CouchSurname = couch.Surname;
             Schema = couch.MainSchema;
@@ -36,6 +42,20 @@ namespace PL.ViewModels.PagesViewModels
             PointsPerGame = couch.PointsPerGame.ToString();
             Salary = couch.Salary.ToString();
             DateExpirContract = couch.DateExpirContract.ToDateTime(new TimeOnly(0));
+        }
+        public void SetDefault()
+        {
+            CouchName = string.Empty;
+            CouchSurname = string.Empty;
+            Schema = string.Empty;
+            PointsPerGame = string.Empty;
+            Salary = string.Empty;
+            DateExpirContract = null;
+            DateExpirContractLabel = string.Empty;
+
+            AmountTrophies = null;
+            Age = null;
+            Games = null;
         }
         public void SetCouch(Couch couch)
         {
@@ -48,6 +68,36 @@ namespace PL.ViewModels.PagesViewModels
             PointsPerGame = couch.PointsPerGame.ToString();
             Salary = couch.Salary.ToString();
             DateExpirContract = couch.DateExpirContract.ToDateTime(new TimeOnly(0));
+        }
+        public void UpdateCouch(Couch couch)
+        {
+            couch.Name = CouchName;
+            couch.Surname = CouchSurname;
+            couch.MainSchema = Schema;
+            couch.AmountTrophies = AmountTrophies.Value;
+            couch.Age = Age.Value;
+            couch.Games = Games.Value;
+            couch.PointsPerGame = Convert.ToDouble(PointsPerGame);
+            couch.Salary = Convert.ToDouble(Salary);
+            couch.DateExpirContract = DateOnly.FromDateTime(DateExpirContract.Value);
+        }
+        public Couch CreateCouch()
+        {
+#pragma warning disable CS8629 // Nullable value type may be null.
+            Couch couch = new Couch()
+            {
+                Name = CouchName,
+                Surname = CouchSurname,
+                MainSchema = Schema,
+                PointsPerGame = Convert.ToDouble(PointsPerGame),
+                Salary = Convert.ToDouble(Salary),
+                DateExpirContract = DateOnly.FromDateTime(DateExpirContract.Value),
+                AmountTrophies = AmountTrophies.Value,
+                Age = Age.Value,
+                Games = Games.Value,
+            };
+#pragma warning restore CS8629 // Nullable value type may be null.
+            return couch;
         }
         public string DateExpirContractLabel
         {
@@ -64,17 +114,17 @@ namespace PL.ViewModels.PagesViewModels
             get => _couchSurname;
             set => Set(ref _couchSurname, value);
         }
-        public int AmountTrophies
+        public int? AmountTrophies
         {
             get => _amountTrophies;
             set => Set(ref _amountTrophies, value);
         }
-        public int Age
+        public int? Age
         {
             get => _age;
             set => Set(ref _age, value);
         }
-        public int Games
+        public int? Games
         {
             get => _games;
             set => Set(ref _games, value);

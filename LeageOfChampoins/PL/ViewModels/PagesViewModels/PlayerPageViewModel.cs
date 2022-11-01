@@ -28,25 +28,52 @@ namespace PL.ViewModels.PagesViewModels
         private string _position;
         private string _cost;
 
-        public PlayerPageViewModel(List<Player> players)
+        public PlayerPageViewModel(List<Player>? players)
         {
+            if (players.Count == 0)
+            {
+                SetDefault();
+                return;
+            }
             PlayerList = players;
             SelectedPlayer = players[0];
-            SetPlayer(SelectedPlayer);
+            SetPlayer();
         }
-        public void SetPlayer(Player player)
+        public void AddPlayer(Player player)
         {
-            PlayerName = player.Name;
-            PlayerSurname = player.Surname;
-            IndividualAwards = player.IndividualAwards;
-            Age = player.Age;
-            Games = player.Games;
-            Number = player.Number;
-            Goals = player.Goals;
-            Assists = player.Assists;
-            Salary = player.Salary.ToString();
-            Position = player.Position;
-            Cost = player.Cost.ToString();
+            PlayerList.Add(player);
+            SelectedPlayer = player;
+        }
+        public void SetDefault()
+        {
+            _playerList = new List<Player>();
+
+            _playerName = String.Empty;
+            _playerSurname = String.Empty;
+            _playerFullName = String.Empty;
+            _individualAwards = 0;
+            _age = 0;
+            _games = 0;
+            _number = 0;
+            _goals = 0;
+            _assists = 0;
+            _salary = String.Empty;
+            _position = String.Empty;
+            _cost = String.Empty;
+        }
+        public void SetPlayer()
+        {
+            PlayerName = SelectedPlayer.Name;
+            PlayerSurname = SelectedPlayer.Surname;
+            IndividualAwards = SelectedPlayer.IndividualAwards;
+            Age = SelectedPlayer.Age;
+            Games = SelectedPlayer.Games;
+            Number = SelectedPlayer.Number;
+            Goals = SelectedPlayer.Goals;
+            Assists = SelectedPlayer.Assists;
+            Salary = SelectedPlayer.Salary.ToString();
+            Position = SelectedPlayer.Position;
+            Cost = SelectedPlayer.Cost.ToString();
             
             PlayerFullName = PlayerName + " " + PlayerSurname;
 
@@ -138,7 +165,7 @@ namespace PL.ViewModels.PagesViewModels
             set
             {
                 Set(ref _selectedPlayer, value);
-                SetPlayer(_selectedPlayer);
+                SetPlayer();
             }
         }
     }

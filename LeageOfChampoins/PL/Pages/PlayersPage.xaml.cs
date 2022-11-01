@@ -1,5 +1,6 @@
 ﻿using BLL.Entities;
 using BLL.Services;
+using LOFC.PL.Modals;
 using Newtonsoft.Json;
 using PL.UIProcess;
 using PL.ViewModels.PagesViewModels;
@@ -29,33 +30,35 @@ namespace LOFC.PL.Pages
         private PlayerService _playerService = new();
         private PlayerPageViewModel _playerPageViewModel;
 
+        private int _clubId;
+
         private List<Label> _labels;
         private List<UIElement> _children;
         private List<UIElement> _mainChildren;
 
         readonly string PATH = $"{Environment.CurrentDirectory}\\JSON data\\Positions.json";
 
-        public PlayersPage(List<Player> players)
+        public PlayersPage(List<Player>? players, int ClubId)
         {
             InitializeComponent();
             _playerPageViewModel = new PlayerPageViewModel(players);
 
-            if (players is null)
+            _labels = VisibilityPageELement.initLabelList("notEditedLabel", mainStacklPanel);
+            _children = VisibilityPageELement.initBoxList("EditedBox", mainStacklPanel);
+            _mainChildren = VisibilityPageELement.initMainBoxList("mainBox", mainGrid);
+
+            _clubId = ClubId;
+            if (players.Count == 0)
             {
-                _mainChildren = VisibilityPageELement.initMainBoxList("mainBox", mainGrid);
                 VisibilityPageELement.SetVisibility(havingNotCouch, Visibility.Visible);
                 VisibilityPageELement.SetVisibility(_mainChildren, Visibility.Collapsed);
-            }
-            else
-            {
-                _labels = VisibilityPageELement.initLabelList("notEditedLabel", mainStacklPanel);
-                _children = VisibilityPageELement.initBoxList("EditedBox", mainStacklPanel);
             }
 
             this.DataContext = _playerPageViewModel;
 
             InitComboBoxes();
         }
+        
         private void InitComboBoxes()
         {
             if (File.Exists(PATH))
@@ -69,6 +72,10 @@ namespace LOFC.PL.Pages
         }
 
         private void EditClick(object sender, RoutedEventArgs e)
+        {
+            SetEditingMode();
+        }
+        private void SetEditingMode()
         {
             updateButton.Visibility = Visibility.Visible;
 
@@ -91,12 +98,48 @@ namespace LOFC.PL.Pages
                 }
             }
         }
-
         private void UpdateClick(object sender, RoutedEventArgs e)
         {
             updateButton.Visibility = Visibility.Collapsed;
+            cancelButton.Visibility = Visibility.Collapsed;
             VisibilityPageELement.SetVisibility(_labels, Visibility.Visible, _children, Visibility.Collapsed);
         }
 
+        private void CancelClick(object sender, RoutedEventArgs e)
+        {
+            _playerPageViewModel.SetPlayer();
+            updateButton.Visibility = Visibility.Collapsed;
+            cancelButton.Visibility = Visibility.Collapsed;
+            VisibilityPageELement.SetVisibility(_labels, Visibility.Visible, _children, Visibility.Collapsed);
+        }
+
+        private async void AppointClick(object sender, RoutedEventArgs e)
+        {
+           await CreatePlayer();
+        }
+        private async Task CreatePlayer()
+        {
+            CreatePlayerModalWindow createPlayerModal = new(_clubId);
+            createPlayerModal.ShowDialog();
+
+            if (createPlayerModal.Player != null)
+            {
+                await _playerService.CreatePlayer(createPlayerModal.Player);
+                _playerPageViewModel.AddPlayer(createPlayerModal.Player);
+
+                VisibilityPageELement.SetVisibility(havingNotCouch, Visibility.Collapsed);
+                VisibilityPageELement.SetVisibility(_mainChildren, Visibility.Visible);
+            }
+            else
+            {
+
+            }
+        }
+        private async void SignClick(object sender, RoutedEventArgs e)
+        {
+            await CreatePlayer();
+        }
+
+        /* ------------------------------------------------------- */
     }
 }

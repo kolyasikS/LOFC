@@ -23,17 +23,20 @@ namespace PL.ViewModels
 
         private double _frameOpacity;
         private bool isLoading = false;
-        public ClubManagementViewModel(Club club, Owner owner, List<Player> players)
+        public ClubManagementViewModel(Club club, Owner owner, List<Player>? players)
         {
             _homePage    = new HomePage(club);
             _ownerPage   = new OwnerPage(owner);
-            _couchPage   = new CouchPage(club.CouchId);
-            _playersPage = new PlayersPage(players);
+            _couchPage   = new CouchPage(club.CouchId, UpdateCouch);
+            _playersPage = new PlayersPage(players, club.Id);
 
             FrameOpacity = 1;
             CurrentPage = _homePage;
         }
-
+        public void UpdateCouch(int CouchId)
+        {
+            ((HomePage)_homePage).UpdateCouch(CouchId);
+        }
         public double FrameOpacity
         {
             get => _frameOpacity;

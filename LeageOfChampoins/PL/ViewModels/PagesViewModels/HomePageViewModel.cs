@@ -28,7 +28,6 @@ namespace PL.ViewModels.PagesViewModels
         private char? _group;
         private string _schema;
         private League _league;
-        private string _dateLabelFoundation;
 
         public HomePageViewModel(Club club, IEnumerable<League> leagues)
         {
@@ -72,11 +71,6 @@ namespace PL.ViewModels.PagesViewModels
         {
             get => _leagueList;
             set => Set(ref _leagueList, value);
-        }
-        public string DateLabelFoundation
-        {
-            get => _dateLabelFoundation;
-            set => Set(ref _dateLabelFoundation, value);
         }
         public string ClubName
         {

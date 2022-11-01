@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,8 +45,14 @@ namespace LOFC.PL.Pages
             
             _labels = VisibilityPageELement.initLabelList("notEditedLabel", mainStacklPanel);
             _children = VisibilityPageELement.initBoxList("EditedBox", mainStacklPanel);
-        }
 
+            
+        }
+        public async void UpdateCouch(int CouchId)
+        {
+            _club.CouchId = CouchId;
+            await _clubService.UpdateClub(_club);
+        }
         private void LeagueSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var league = (League)((ComboBox)sender).SelectedItem;
