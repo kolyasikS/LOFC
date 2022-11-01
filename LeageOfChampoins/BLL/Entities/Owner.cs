@@ -14,7 +14,7 @@ namespace BLL.Entities
         string Nation { get; set; }
         int Age { get; set; }
         double Capital { get; set; }
-        [ForeignKey "Club"]
+        [ForeignKey("ClubId")]
         public int CLubId { get; set; }
         public Club Club { get; set; } 
     }
